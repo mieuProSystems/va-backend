@@ -6,11 +6,11 @@ const router = express.Router();
 
 //handle email registration
 router.post('/register', async function (request, response, next) {
-
+    console.log(request.body);
     //check the type of registration
-    if (request.body.registration_method === 'google') {
-        next('route');
-    }
+    /* if (request.body.registration_method === 'google') {
+         next('route');
+     } */
     //check email already exists
     const email_exists = await UserCredentials.findOne({email: request.body.email});
     if (email_exists) {
@@ -35,10 +35,8 @@ router.post('/register', async function (request, response, next) {
     const user_credits = new UserCredentials(request.body);
     try {
         await user_credits.save();
-
         //send account verification email
         // mailVerification.verifyMail(request.body.userId, request.body.email, request.headers.host);
-
         return response.status(200).json({
             token: request.body.token,
             status: 'success'
